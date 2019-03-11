@@ -12,7 +12,7 @@ telepot.api._pools = {
 telepot.api._onetime_pool_spec = (urllib3.ProxyManager, dict(proxy_url=proxy_url, num_pools=1, maxsize=1, retries=False, timeout=30))
 
 bot = telepot.Bot(BOT_KEY)
-bot.setWebhook("https://whereismyguts.pythonanywhere.com/{}".format(FLASK_SECRET), max_connections=1)
+bot.setWebhook("https://whereismyguts.pythonanywhere.com/{}".format(FLASK_SECRET), max_connections=5)
 
 app = Flask(__name__)
 
@@ -22,6 +22,6 @@ def telegram_webhook():
     if "message" in update:
         text = get_status()
         chat_id = update["message"]["chat"]["id"]
-        print('chat', chat_id)
+        # print('chat', chat_id)
         bot.sendMessage(chat_id, text)
     return "OK"

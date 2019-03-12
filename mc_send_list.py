@@ -18,22 +18,22 @@ bot.setWebhook(
     "https://whereismyguts.pythonanywhere.com/{}".format(FLASK_SECRET), max_connections=1)
 
 chat_id = 258610595
-hour_in_secs = 60*60
+hour_in_secs = 60 * 60
 
 if __name__ == "__main__":
-    now = datetime.datetime.utcnow()+datetime.timedelta(hours=3)
+    now = datetime.datetime.utcnow() + datetime.timedelta(hours=3)
     if now.weekday() in [5, 6]:
-        bot.sendMessage(chat_id, 'its da weekend!! '+str(now))
+        bot.sendMessage(chat_id, 'its da weekend!! ' + str(now))
         exit()
 
     while True:
-        now = datetime.datetime.utcnow()+datetime.timedelta(hours=3)
+        now = datetime.datetime.utcnow() + datetime.timedelta(hours=3)
         if now.hour > 20:
             bot.sendMessage(chat_id, 'It\'s time to stop working. Bye.')
             exit()
-
-        # if now.hour in [9, 13, 17]:
-        text = get_status()
+        bot.sendMessage('test: hour ' + now.hour, text)
+        if now.hour in [9, 13, 17]:
+            text = get_status()
         bot.sendMessage(chat_id, text)
 
-        time.sleep(hour_in_secs/60)
+        time.sleep(hour_in_secs)

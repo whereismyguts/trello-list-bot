@@ -4,8 +4,7 @@ from settings import *
 status_wip = ['В работе', ]
 status_wait = ['Уточнения', ]
 status_done = ['Code Review', 'Test']
-status_todo = ['TODO', 'Сервер'] # + status_wait
-
+status_todo = ['TODO', 'Сервер']  # + status_wait
 
 
 def get(path):
@@ -32,9 +31,9 @@ def get_boards():
 
 
 def check_n_populate(ts_list, l_name, c_name, extra):
-        for tl, sl in ts_list:
-            if l_name in sl or any([l_name.startswith(s) for s in sl]):
-                tl.append('{} {}'.format(c_name, extra))
+    for tl, sl in ts_list:
+        if l_name in sl or any([l_name.startswith(s) for s in sl]):
+            tl.append('{} {}'.format(c_name, extra))
 
 
 def get_status():
@@ -50,10 +49,10 @@ def get_status():
             lists = get_lists(b_id)
             for l in lists:
                 # if or l['name'] in my_lists:
-                    boards[b_id]['lists'][l['id']] = dict(
-                        name=l['name'],
-                        cards=list(),
-                    )
+                boards[b_id]['lists'][l['id']] = dict(
+                    name=l['name'],
+                    cards=list(),
+                )
 
         for card in cards:
             board_id = card['idBoard']
@@ -68,8 +67,10 @@ def get_status():
                 lst['cards'].append(crd)
 
     result = ''
-    i = 1
+
+    b_id = 1
     for b in boards.values():
+        t_id = 1
         if not b['lists']:
             continue
         todo_tasks = []
@@ -89,13 +90,13 @@ def get_status():
                 ], l['name'], c['name'], extra)
 
         if todo_tasks or wip_tasks:  # or done_tasks:
-            result+='\n'*2+b['name'] + ':\n'
+            result += '\n\n' + b['name'] + ':\n'
 
-
-        result, i = append_tasks(result, i, wip_tasks, '  Делаю сегодня:')
-        result, i = append_tasks(result, i, todo_tasks)
-        result, i = append_tasks(result, i, wait_tasks, '\n  На уточнении:')
-
+        result, t_id = append_tasks(result, b_id, t_id, wip_tasks)  # , '  Делаю сегодня:')
+        result, t_id = append_tasks(result, b_id, t_id, todo_tasks)
+        result, t_id = append_tasks(
+            result, b_id, t_id, wait_tasks, '\nНа уточнении:')
+        b_id += 1
         # if wip_tasks:
         #     result+='\n'+'  в работе:'
         #     for t in wip_tasks:
@@ -109,20 +110,20 @@ def get_status():
         #     result+='\n'
 
     return result
-        # if done_tasks:
-        #     print('  done:')
-        #     for t in done_tasks:
-        #         print(' '*2+'{}.{}'.format('x', t))
-        #     print()
+    # if done_tasks:
+    #     print('  done:')
+    #     for t in done_tasks:
+    #         print(' '*2+'{}.{}'.format('x', t))
+    #     print()
 
-def append_tasks(res, i, tasks, label=''):
+
+def append_tasks(res, b_id, t_id, tasks, label=''):
     if tasks:
-        res+=label
+        res += label
         for t in tasks:
-            res+='\n'+'    {}.{}'.format(i, t)
-            i += 1
-    return res, i
-
+            res += '\n' + '{}.{}. {}'.format(b_id, t_id, t)
+            t_id += 1
+    return res, t_id
 
 
 if __name__ == "__main__":

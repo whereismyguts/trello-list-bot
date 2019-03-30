@@ -4,6 +4,7 @@ import time
 import datetime
 from trello_parser import get_status
 from settings import *
+import random
 
 proxy_url = "http://proxy.server:3128"
 telepot.api._pools = {
@@ -20,18 +21,29 @@ bot.setWebhook(
 chat_id = 258610595
 hour_in_secs = 60 * 60
 
+eyes = [';', ':', '8', 'B', 'x', 'X']
+mouths = [')', '(', '*', '|', '\\', '/', 'p', 'P', 'o', 'O', 'D']
+
+
+def stop_working():
+    bot.sendMessage(chat_id, 'It\'s time to stop working. See you tomorrow. {}{}'.format(
+        random.choice(eyes),
+        random.choice(mouths),
+    ))
+    exit()
+
 if __name__ == "__main__":
     now = datetime.datetime.utcnow() + datetime.timedelta(hours=3)
     if now.weekday() in [5, 6]:
-        bot.sendMessage(chat_id, 'its da weekend!! ' + str(now))
-        exit()
+        # bot.sendMessage(chat_id, 'its da weekend!! ' + str(now))
+        stop_working()
 
     while True:
         now = datetime.datetime.utcnow() + datetime.timedelta(hours=3)
         if now.hour > 20:
-            bot.sendMessage(chat_id, 'It\'s time to stop working. Bye.')
-            exit()
-        bot.sendMessage(chat_id, 'test: hour {}'.format(now.hour))
+            stop_working()
+            
+        # bot.sendMessage(chat_id, 'test: hour {}'.format(now.hour))
         if now.hour in [9, 13, 17]:
             text = get_status()
         bot.sendMessage(chat_id, text)

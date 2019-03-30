@@ -69,7 +69,7 @@ def get_status():
     result = ''
 
     b_id = 1
-    for b in boards.values():
+    for b in boards.values()[::-1]:
         t_id = 1
         if not b['lists']:
             continue
@@ -95,8 +95,9 @@ def get_status():
         result, t_id = append_tasks(result, b_id, t_id, wip_tasks)  # , '  Делаю сегодня:')
         result, t_id = append_tasks(result, b_id, t_id, todo_tasks)
         result, t_id = append_tasks(
-            result, b_id, t_id, wait_tasks, '\nНа уточнении:')
-        b_id += 1
+            result, b_id, t_id, wait_tasks, '\n-на уточнении-')
+        if result:
+            b_id += 1
         # if wip_tasks:
         #     result+='\n'+'  в работе:'
         #     for t in wip_tasks:

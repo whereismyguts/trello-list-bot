@@ -31,7 +31,7 @@ if __name__ == "__main__":
         if now.hour > 20:
             bot.sendMessage(chat_id, 'It\'s time to stop working. Bye.')
             exit()
-        bot.sendMessage('test: hour ' + now.hour, text)
+        bot.sendMessage(chat_id, 'test: hour {}'.format(now.hour))
         if now.hour in [9, 13, 17]:
             text = get_status()
         bot.sendMessage(chat_id, text)

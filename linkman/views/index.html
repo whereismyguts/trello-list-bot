@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+     <link
+    rel="stylesheet"
+    href="static/main.css"
+    </link>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+      <!--Import materialize.css-->
+      <link type="text/css" rel="stylesheet" href="static/materialize.min.css"  media="screen,projection"/>
+
+      <!--Let browser know website is optimized for mobile-->
+      <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+        <script src="https://unpkg.com/vue"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script type="text/javascript" src="static/materialize.min.js"></script>
+  
+    <title>My Links</title>
+    
+  </head>
+  <body>
+
+<style>
+  .card{
+    max-width: 400px; margin: 10px; 
+        
+    
+  }
+  .card-content{
+    padding-bottom: 5px!important;
+  }
+  .card-title{
+
+  }
+  .collection_{
+    overflow-y: auto;
+    height: 200px;
+  }
+  .cards{
+    display: -webkit-flex;
+    display: flex;
+    flex-wrap: wrap;
+    position: absolute;
+    top: 40px;
+    margin: auto;
+    justify-content: center;
+    align-items: baseline;
+    width: 100%;
+  }
+  summary{
+        /*color: #fff;*/
+  }
+  a {
+    color: black
+  }
+  #app{
+    
+    animation: showdelay  2s  ease-in-out;
+  }
+
+.header{
+    background-color: #ffdc00;
+
+    margin: 0px;
+    padding: 0px;
+    height: 70px;
+    font-size: 18px;
+}
+.loading {
+  background-color: #FFDC00;
+  width: 100px;
+  height: 100px;
+  margin: 25% auto;
+}
+body{
+      background: #444;
+}
+details{
+  position:fixed;
+  bottom: 20px;
+  right: 20px;
+  
+}
+.link:hover{
+  border-left: 1px solid #FFDC00;
+}
+.link{
+  text-align:left;
+  border-left: 1px solid #fff;
+  
+}
+td a{
+    display: inline-block;
+    height: 100%;
+    width: 100%;
+    text-align: center;
+    padding: 10px 5px;
+}
+td {
+  
+    
+    padding: 0;
+    /* height: 0px; */
+  
+}
+body{
+background-color: #333333;
+background-image: url("https://www.transparenttextures.com/patterns/carbon-fibre.png");
+/*background-image: url("https://www.transparenttextures.com/patterns/light-sketch.png");*/
+}
+</style>
+
+
+<div id="app">
+
+<div style="z-index:3; position: absolute;background:#333; width:100%; height:100%" v-if="wait"> 
+
+  <div class="loading">
+    </div>
+</div>
+
+<div class='main' v-else>
+  <div class="header" >
+  <span style="display:none">{{! username}}</span>
+  </div>
+  <div class="cards">
+    <div v-for="card in cards" class="card">  
+    <p class="center-align"><a href="#!"  v-on:click="card.is_minimized = !card.is_minimized"   style="width: 100%; display:inline-block"><i class="material-icons">remove</i></a></p>
+      <div v-if="card.is_minimized==false" class="card-content">
+
+        <div  v-if="card.is_edit" >
+          
+          <input style="font-size:24px; height:32px; font-weight: 300;" v-model="card.title" placeholder="title"/>
+          <input style="font-size:14.5px; height:21.75px;" v-model="card.desc" placeholder="desc"/>
+          <a v-on:click="change_card(card)" class="waves-effect waves-teal btn">save</a>
+          <a v-on:click="card.is_edit=false" class="waves-effect waves-teal btn">nope</a>
+
+        </div>
+        <div v-else  v-on:click="card.is_edit = true">
+         <h5 class="card-title">{{! card.title }}</h5>
+          <p class="card-text">{{! card.desc }}</p>
+        </div>
+
+          <ul class="collection" style="display:none">
+            <div  v-for="link in card.links" class="collection-item">
+              <a class="link"  target="_blank" rel="noopener noreferrer"  v-bind:href="link.url">{{! link.text }}</a>
+              <a  v-on:click="remove_item(link)" class="secondary-content" style="cursor: pointer"><i class="material-icons">close</i></a>
+            </div>
+          </ul>
+
+        <table style="margin-bottom: 10px;">
+          <tbody>
+            <tr v-for="link in card.links">
+              <td><a class="link"  target="_blank" rel="noopener noreferrer"  v-bind:href="link.url">{{! link.text }}</a></td>
+              
+              <td><a  v-on:click="remove_item(link)" class="secondary-content" style="cursor: pointer"><i class="material-icons">close</i></a></td>
+            </tr>
+          </tbody>
+        </table>
+          
+          <div v-if="card.link_adding">  
+            <input v-model="card.new_link_url" placeholder="url"/>
+            <input v-model="card.new_link_text" placeholder="text"/>
+            <div class="right-align">
+            <a v-on:click="add_link(card)" class="waves-effect waves-teal btn">add link</a>
+            <a v-on:click="card.link_adding=false" class="waves-effect waves-teal btn">nope</a>
+            </div>
+          </div>
+
+          <div v-else-if="!card.is_edit" class="right-align">
+            <a href="#!" v-on:click="card.link_adding = true"><i class="material-icons">link</i></a>
+            
+            <a href="#!"  v-on:click="remove_item(card)"   style="color:red"><i class="material-icons">delete</i></a>
+          </div>
+      </div>
+      <div v-else>
+      <h5 style="margin:20px" class="card-title center-align">
+        {{! card.title }} 
+        
+      </h5>
+
+      </div>
+    </div>
+   
+   <div style="position:fixed; bottom: 20px; right: 20px">
+
+
+
+    <div class="card" v-if="new_card.adding">
+      <div class="card-content right-align">
+               
+          <input style="font-size:24px; height:32px" v-model="new_card.title" placeholder="title"/>
+          <input style="font-size:14.5px; height:21.75px;" v-model="new_card.desc" placeholder="desc"/>
+          <a v-on:click="add_card(new_card)" class="waves-effect waves-teal btn">add list</a>
+          <a v-on:click="new_card.adding=false" class="waves-effect waves-teal btn">nope</a>
+
+                          
+      </div>
+    </div>
+    <a v-else  v-on:click="new_card.adding = true"  class="btn-floating btn-large">
+      <i class="large material-icons">playlist_add</i>
+    </a>
+    </div>
+  </div>
+<div>
+
+  
+  </body>
+  <script type="text/javascript" src="static/main.js"></script>
+</html>

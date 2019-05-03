@@ -7,11 +7,11 @@ import tornado.web
 import random
 import json
 from linkman.mongo import (
-    add_link, get_cards, 
-    remove_doc, 
+    add_link, get_cards,
+    remove_doc,
     change_card, add_card,
 )
-from linkman.settings import *
+from settings import *
 import time
 
 

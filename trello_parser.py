@@ -69,7 +69,8 @@ def get_status():
     result = ''
 
     b_id = 1
-    for b in boards.values()[::-1]:
+    for b in list(boards.values())[::-1]:
+        board_block = ''
         t_id = 1
         if not b['lists']:
             continue
@@ -90,14 +91,18 @@ def get_status():
                 ], l['name'], c['name'], extra)
 
         if todo_tasks or wip_tasks:  # or done_tasks:
-            result += '\n\n' + b['name'] + ':\n'
+            board_block += '\n\n' + b['name'] + ':\n'
 
-        result, t_id = append_tasks(result, b_id, t_id, wip_tasks)  # , '  Делаю сегодня:')
-        result, t_id = append_tasks(result, b_id, t_id, todo_tasks)
-        result, t_id = append_tasks(
-            result, b_id, t_id, wait_tasks, '\n-на уточнении-')
-        if result:
+        board_block, t_id = append_tasks(board_block, b_id, t_id, wip_tasks)  # , '  Делаю сегодня:')
+        board_block, t_id = append_tasks(board_block, b_id, t_id, todo_tasks)
+        board_block, t_id = append_tasks(
+            board_block, b_id, t_id, wait_tasks, '\n-на уточнении-')
+        if board_block:
+            print('board id: {}'.format(b_id))
+            print(board_block)
+            print()
             b_id += 1
+            result += board_block
         # if wip_tasks:
         #     result+='\n'+'  в работе:'
         #     for t in wip_tasks:

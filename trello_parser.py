@@ -36,7 +36,7 @@ def check_n_populate(ts_list, l_name, c_name, extra):
             tl.append('{} {}'.format(c_name, extra))
 
 
-def get_status():
+def get_status(web=False):
     boards = ''
     if not boards:
         cards = get_cards()
@@ -114,7 +114,8 @@ def get_status():
         #         result+='\n'+'  {}.{}'.format(i, t)
         #         i += 1
         #     result+='\n'
-
+    if web:
+        result = result.replace('\n', '<br>---<br>')
     return result
     # if done_tasks:
     #     print('  done:')

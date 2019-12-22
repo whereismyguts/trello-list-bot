@@ -13,16 +13,27 @@ if project_home not in sys.path:
     sys.path = [project_home] + sys.path
 
 # import flask app but need to call it "application" for WSGI to work
-from trello_flask_app import app as application  # noqa
-from trello_parser import get_status
-from linkman.run import HANDLERS 
+# from trello_flask_app import app as application 
 
 import tornado.web
 import tornado.wsgi
 
+
+'''
+this file must be copied to '/var/www/whereismyguts_pythonanywhere_com_wsgi.py'
+there need to be an value called 'application' in this file
+'''
+
+# from trello_parser import get_status  
 # class MainHandler(tornado.web.RequestHandler):
 #     def get(self):
 #         text = get_status(web=True)
 #         self.write(text)
 
-application = tornado.wsgi.WSGIApplication(HANDLERS, debug=True)
+
+# from linkman.run import HANDLERS  
+# application = tornado.wsgi.WSGIApplication(HANDLERS, debug=True)
+
+
+# import flask app but need to call it "application" for WSGI to work                                    │+                        self.finish()
+from trello_flask_app import app as application 

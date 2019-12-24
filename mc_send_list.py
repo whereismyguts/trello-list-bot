@@ -1,3 +1,4 @@
+# -*- encoding: utf-8 -*-
 import telepot
 import urllib3
 import time

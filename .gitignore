@@ -3,6 +3,10 @@ settings.py
 __pycache__/
 *.py[cod]
 *$py.class
+Scripts/
+tcl/
+Include/
+*.db
 
 # C extensions
 *.so
@@ -103,3 +107,5 @@ venv.bak/
 
 # mypy
 .mypy_cache/
+pip-selfcheck.json
+

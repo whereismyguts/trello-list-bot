@@ -1,4 +1,4 @@
-# -*- encoding: utf-8 -*-
+from flask import Flask, fl_request
 
 from flask import Flask, request
 import telepot

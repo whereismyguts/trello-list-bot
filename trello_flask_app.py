@@ -13,6 +13,7 @@ proxy_url = "http://proxy.server:{}".format(PORT)
 telepot.api._pools = {
     'default': urllib3.ProxyManager(proxy_url=proxy_url, num_pools=3, maxsize=10, retries=False, timeout=30),
 }
+URL = "https://whereismyguts.pythonanywhere.com/{}".format(FLASK_SECRET)
 telepot.api._onetime_pool_spec = (urllib3.ProxyManager, dict(
     proxy_url=proxy_url, num_pools=1, maxsize=1, retries=False, timeout=30))
 app = Flask(__name__)
@@ -59,8 +60,7 @@ webhook = OrderedWebhook(
     }
 )
 
-bot.setWebhook(
-    "https://whereismyguts.pythonanywhere.com/{}".format(FLASK_SECRET), max_connections=5)
+
 
 
 @app.route('/{}'.format(FLASK_SECRET), methods=["POST"])
@@ -68,6 +68,15 @@ def pass_update():
     webhook.feed(request.data)
     return 'OK'
 
+
+if __name__ == '__main__':
+    try:
+        bot.setWebhook(URL, max_connections=5)
+    # Sometimes it would raise this error, but webhook still set successfully.
+    except telepot.exception.TooManyRequestsError:
+        pass
+
+    webhook.run_as_thread()
 
 # @app.route('/{}'.format(FLASK_SECRET), methods=["POST"])
 # def telegram_webhook():
